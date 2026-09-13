@@ -10,7 +10,7 @@ English | [中文](README.md)
 
 - **6-step Process** ([SKILL.md](SKILL.md)): confirm the scenario and bottleneck type → profile and locate hotspots → select and apply optimization techniques → re-test to verify and quantify gains → numerical precision and determinism checks → runtime tuning and archiving
 - **21-step detailed guide** ([references/guide.md](references/guide.md)): each Process step is annotated with "Guide Steps N–M"; single-capability tasks can enter at the corresponding Step and wrap up in place, without walking all 21 steps
-- **14-chapter principles catalog** ([references/methodology.md](references/methodology.md)): data layout / false sharing & prefetching / vectorization / loops & ILP / parallel decomposition / pipeline orchestration / compiler optimization / IO / algorithms / floating-point precision / precision-performance trade-offs / verification methodology / meta-principles
+- **16-chapter principles catalog** ([references/methodology.md](references/methodology.md)): workflow & profiling / data layout / false sharing & prefetching / vectorization / loops & ILP / parallel decomposition & concurrency / pipeline orchestration / compiler optimization / IO & data movement / algorithms & data structures / floating-point precision / precision-performance trade-offs / verification methodology / meta-principles / distributed & services / frontend rendering & resource loading
 - **Topics covered**: cache-friendly design, SIMD vectorization ideas, loop transformations, NUMA awareness, optimization levels/inlining/LTO/PGO, precision optimization and determinism
 - **Self-contained corpus**: the skill itself works without the source corpus; the corpus (15 MB of PDFs/images) is not shipped with the package
 
@@ -72,7 +72,8 @@ ouyezi/
 ├── references/
 │   ├── guide.md               # 21-step detailed guide (baseline/profiling/precision/archival)
 ├── references/
-│   └── methodology.md         # 14 章跨平台原则目录
+│   ├── guide.md               # 21-step detailed guide
+│   └── methodology.md         # 16-chapter cross-platform principles
 ├── evals/
 │   └── evals.json             # 4 用例（3 正 1 负）
 └── corpus/                    # source corpus (~15 MB, not distributed, excluded on deploy)

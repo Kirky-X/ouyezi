@@ -10,7 +10,7 @@
 
 - **6 步 Process**（[SKILL.md](SKILL.md)）：确认场景与瓶颈类型 → 剖析定位热点 → 选择并应用优化手段 → 复测验证与量化收益 → 数值精度与确定性检查 → 运行时调优与归档
 - **21 步详细指南**（[references/guide.md](references/guide.md)）：Process 各步标注"指南 Steps N–M"，单能力任务可从对应 Step 进入、就地收尾，无需走完全部 21 步
-- **14 章原则目录**（[references/methodology.md](references/methodology.md)）：数据布局 / 伪共享与预取 / 向量化 / 循环与 ILP / 并行分解 / 流水线编排 / 编译器优化 / IO / 算法 / 浮点精度 / 精度-性能权衡 / 验证方法论 / 元原则
+- **16 章原则目录**（[references/methodology.md](references/methodology.md)）：工作流与剖析 / 数据布局 / 伪共享与预取 / 向量化 / 循环与 ILP / 并行分解与并发 / 流水线编排 / 编译器优化 / IO 与数据搬移 / 算法与数据结构 / 浮点精度 / 精度-性能权衡 / 验证方法论 / 元原则 / 分布式与服务化 / 前端渲染与资源加载
 - **覆盖主题**：缓存友好性设计、SIMD 向量化思想、循环变换、NUMA 意识、优化等级/内联/LTO/PGO、精度优化与确定性
 - **语料自洽**：skill 本体不依赖源语料即可工作；源语料（15 MB PDF/图）不随包分发
 
@@ -71,9 +71,11 @@ ouyezi/                        # 欧冶子
 ├── SKILL.md                   # 6 步 Process + Setup + Mode line
 ├── references/
 │   ├── guide.md               # 21 步详细指南（含基线/剖析/精度/归档全部细节）
-│   └── methodology.md         # 原则目录（14 节）
+│   ├── guide.md               # 21 步详细指南（含基线/剖析/精度/归档全部细节）
+│   └── methodology.md         # 原则目录（16 节）
 ├── references/
-│   └── methodology.md         # 14 章跨平台原则目录
+│   ├── guide.md               # 21 步详细指南
+│   └── methodology.md         # 16 章跨平台原则目录
 ├── evals/
 │   └── evals.json             # 4 用例（3 正 1 负）
 └── corpus/                    # 源语料（约 15 MB，不随包分发，部署时被排除；仅存开发工作区）
