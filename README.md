@@ -30,6 +30,8 @@ bash scripts/sync-skills.sh ouyezi
 
 # 方式二：手动复制到技能目录
 cp -r ouyezi/ ~/.zcode/skills/ouyezi/
+# 方式三：远程安装（GitHub 仓库）
+npx skills add Kirky-X/ouyezi --agent claude-code -y
 ```
 
 ## 🚀 快速开始
