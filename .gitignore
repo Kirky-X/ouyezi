@@ -1,3 +1,7 @@
 # 源语料（PDF/图片）不随仓库分发，skill 本体自洽
 corpus/
 *.log
+
+# Specmark/openspec 临时产物（全局规则 24：禁止入 git）
+specmark/
+openspec/
