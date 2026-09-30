@@ -1,4 +1,4 @@
-# references/methodology.md — 通用代码性能优化原则目录
+# methodology.md — 通用代码性能优化原则目录
 
 > 提炼自多份公开性能优化技术文档，已去除全部芯片/厂商专属细节。
 > 本目录是 SKILL.md Process 的完整知识底座，按需查阅对应小节。
