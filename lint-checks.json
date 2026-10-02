@@ -1,0 +1,52 @@
+{
+  "checks": [
+    {
+      "name": "诊断路由小节存在于指南 Step 3",
+      "file": "references/guide.md",
+      "pattern": "### 诊断路由",
+      "min_count": 1
+    },
+    {
+      "name": "症状→框架→手段路由表存在（TMA 骨架）",
+      "file": "references/guide.md",
+      "pattern": "\\| 症状信号 \\|",
+      "min_count": 1
+    },
+    {
+      "name": "复测量化判据-双阈值显著性在 Step 16",
+      "file": "references/guide.md",
+      "pattern": "双阈值显著性",
+      "min_count": 1
+    },
+    {
+      "name": "复测量化判据-噪声地板在 Step 16",
+      "file": "references/guide.md",
+      "pattern": "噪声地板",
+      "min_count": 1
+    },
+    {
+      "name": "索引级深度标注存在（§15/§16 两处）",
+      "file": "references/methodology.md",
+      "pattern": "深度标注：本章为\\*\\*索引级\\*\\*",
+      "min_count": 2
+    },
+    {
+      "name": "指南 Step 20 标注索引级",
+      "file": "references/guide.md",
+      "pattern": "Step 20 — 托管运行时与 GC 调优（索引级）",
+      "min_count": 1
+    },
+    {
+      "name": "§17 持续性能门禁章节存在",
+      "file": "references/methodology.md",
+      "pattern": "## 17\\. 持续性能门禁",
+      "min_count": 1
+    },
+    {
+      "name": "资产文件头三要素（来源/许可/核验日期）",
+      "type": "file-header",
+      "dirs": ["references/commands", "references/templates"],
+      "fields": ["来源", "许可", "核验日期"]
+    }
+  ]
+}

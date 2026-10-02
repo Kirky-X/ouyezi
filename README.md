@@ -1,6 +1,6 @@
 # Ouyezi（欧冶子）— 通用代码性能优化方法论技能
 
-[![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)] [![Dependencies](https://img.shields.io/badge/dependencies-none-blue?style=flat-square)] [![Evals](https://img.shields.io/badge/evals-3%20pos%20%2B%201%20neg-orange?style=flat-square)](#-测试与验证)
+[![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)] [![Dependencies](https://img.shields.io/badge/dependencies-none-blue?style=flat-square)] [![Evals](https://img.shields.io/badge/evals-5%20pos%20%2B%202%20neg-orange?style=flat-square)](#-测试与验证)
 
 中文 | [English](README_EN.md)
 
@@ -9,9 +9,11 @@
 ## ✨ 功能特性
 
 - **6 步 Process**（[SKILL.md](SKILL.md)）：确认场景与瓶颈类型 → 剖析定位热点 → 选择并应用优化手段 → 复测验证与量化收益 → 数值精度与确定性检查 → 运行时调优与归档
-- **21 步详细指南**（[references/guide.md](references/guide.md)）：Process 各步标注"指南 Steps N–M"，单能力任务可从对应 Step 进入、就地收尾，无需走完全部 21 步
-- **16 章原则目录**（[references/methodology.md](references/methodology.md)）：工作流与剖析 / 数据布局 / 伪共享与预取 / 向量化 / 循环与 ILP / 并行分解与并发 / 流水线编排 / 编译器优化 / IO 与数据搬移 / 算法与数据结构 / 浮点精度 / 精度-性能权衡 / 验证方法论 / 元原则 / 分布式与服务化 / 前端渲染与资源加载
-- **覆盖主题**：缓存友好性设计、SIMD 向量化思想、循环变换、NUMA 意识、优化等级/内联/LTO/PGO、精度优化与确定性
+- **21 步详细指南**（[references/guide.md](references/guide.md)）：Process 各步标注"指南 Steps N–M"，单能力任务可从对应 Step 进入、就地收尾，无需走完全部 21 步；Step 3 含 **症状→框架→手段的诊断路由**（TMA 四桶骨架），Step 16–17 含 **复测量化判据**（双阈值显著性 / 最低重复次数 / 噪声地板）
+- **17 章原则目录**（[references/methodology.md](references/methodology.md)）：工作流与剖析 / 数据布局 / 伪共享与预取 / 向量化 / 循环与 ILP / 并行分解与并发 / 流水线编排 / 编译器优化 / IO 与数据搬移 / 算法与数据结构 / 浮点精度 / 精度-性能权衡 / 验证方法论 / 元原则 / 分布式与服务化（索引级）/ 前端渲染（索引级）/ 持续性能门禁（CI）
+- **资产层**：[references/commands/](references/commands/) 可复制的剖析/基准/编译器/IO 命令与阈值表；[references/templates/](references/templates/) 实验前置记录 / 复测报告 / 归档清单模板（工具专名仅存在于资产层，原则层保持架构无关）
+- **覆盖主题**：缓存友好性设计、SIMD 向量化思想、循环变换、分支预测成本模型、机器码布局与 PGO 工具链、NUMA 意识、优化等级/内联/LTO/PGO、微基准方法论、精度优化与确定性、CI 性能门禁
+- **深度分布**：§1–§14、§17 为方法级/判据级；§15/§16 与指南 Step 20 为索引级（只给方向与权衡点）
 - **语料自洽**：skill 本体不依赖源语料即可工作；源语料（15 MB PDF/图）不随包分发
 
 ```mermaid
@@ -40,7 +42,7 @@ npx skills add Kirky-X/ouyezi --agent claude-code -y
 # 验证部署结果（应看到 SKILL.md / references/guide.md / references/methodology.md / evals/）
 ls ~/.zcode/skills/ouyezi/
 
-# 校验 evals 用例数（→ 4）
+# 校验 evals 用例数（→ 7）
 python3 -c "import json; print(len(json.load(open('evals/evals.json'))['evals']))"
 
 # 查看完整原则目录
@@ -55,14 +57,15 @@ sed -n '/^## /p' references/methodology.md
 
 ## ✅ 测试与验证
 
-本 skill 无脚本、无单测，验证方式为 **SKILL.md 引用完整性 + evals**（2026-09-13 实测）：
+本 skill 无脚本、无单测，验证方式为 **SKILL.md 引用完整性 + evals**（2026-10-02 实测）：
 
 | 检查项 | 实测结果 |
 | ------ | -------- |
 | [references/guide.md](references/guide.md) 步骤数 | `grep -c '^## Step'` = **21**（Step 1 – Step 21 连续） |
-| [references/methodology.md](references/methodology.md) 章节数 | **14** 章（§1 – §14，与 SKILL.md 引用的 §11/§12 对应） |
-| SKILL.md 引用的文件 | references/guide.md、references/methodology.md 均存在，0 缺失 |
-| [evals/evals.json](evals/evals.json) | **4 用例：3 正 1 负**（id 4 为负例——CRUD 接口开发不应触发性能流程） |
+| [references/methodology.md](references/methodology.md) 章节数 | **17** 章（§1 – §17，与 SKILL.md 引用的 §11/§12 对应） |
+| SKILL.md 引用的文件 | references/guide.md、references/methodology.md、references/commands/、references/templates/ 均存在，0 缺失 |
+| [evals/evals.json](evals/evals.json) | **7 用例：5 正 2 负**（id 4 负例——无性能诉求的 CRUD 不触发；id 7 负例——绑定指令集的 AVX-512 专属优化不触发；id 5/6 为带 files 输入的能力检验） |
+| 工程体检 | `python3 scripts/skill_lint.py .` 通过（0 FAIL） |
 
 ## 📁 目录结构
 
@@ -70,17 +73,21 @@ sed -n '/^## /p' references/methodology.md
 ouyezi/                        # 欧冶子
 ├── SKILL.md                   # 6 步 Process + Setup + Mode line
 ├── references/
-│   ├── guide.md               # 21 步详细指南（含基线/剖析/精度/归档全部细节）
-│   ├── guide.md               # 21 步详细指南（含基线/剖析/精度/归档全部细节）
-│   └── methodology.md         # 原则目录（16 节）
-├── references/
-│   ├── guide.md               # 21 步详细指南
-│   └── methodology.md         # 16 章跨平台原则目录
+│   ├── guide.md               # 21 步详细指南（含诊断路由/复测判据/资产交叉引用）
+│   ├── methodology.md         # 17 章原则目录（§15/§16 为索引级）
+│   ├── commands/              # 资产层：剖析/基准/编译器/IO 命令与阈值表
+│   │   ├── profiling.md
+│   │   ├── benchmark.md
+│   │   ├── compiler.md
+│   │   └── io-memory.md
+│   └── templates/             # 资产层：实验前置记录/复测报告/归档清单
+│       ├── experiment-plan.md
+│       ├── retest-report.md
+│       └── archive-checklist.md
 ├── evals/
-│   └── evals.json             # 4 用例（3 正 1 负）
+│   └── evals.json             # 7 用例（5 正 2 负，含 files 输入）
 └── corpus/                    # 源语料（约 15 MB，不随包分发，部署时被排除；仅存开发工作区）
-    ├── images/                # 文档配图
-
+    └── images/                # 文档配图
 ```
 
 ## 🔮 边界
@@ -96,6 +103,8 @@ ouyezi/                        # 欧冶子
 
 ## 📄 License 与归属
 
-- License：MIT（以 [SKILL.md](SKILL.md) frontmatter 声明为准，目录内暂未附带 LICENSE 文件）
-- 方法论提炼自多份公开性能优化技术文档并脱敏，不包含任何厂商/芯片专属信息
+- License：MIT（以 [SKILL.md](SKILL.md) frontmatter 声明为准，目录内已附带 [LICENSE](LICENSE) 文件）
+- 方法论提炼自多份公开性能优化技术文档并脱敏，不包含任何厂商/芯片专属信息；
+  资产层命令与模板吸收自开源项目（来源与许可见各文件头部：MIT/CC0/Apache-2.0，
+  perf-ninja 无 LICENSE 仅吸收设计思想、未复制代码）
 - 源语料仅存于开发工作区 `corpus/`，经部署脚本排除，不随 skill 分发
