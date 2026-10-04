@@ -4,7 +4,7 @@
 
 English | [中文](README.md)
 
-[![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)] [![Dependencies](https://img.shields.io/badge/dependencies-none-blue?style=flat-square)] [![Evals](https://img.shields.io/badge/evals-5%20pos%20%2B%202%20neg-orange?style=flat-square)](#-测试与验证)
+[![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)] [![Dependencies](https://img.shields.io/badge/dependencies-none-blue?style=flat-square)] [![Evals](https://img.shields.io/badge/evals-5%20pos%20%2B%202%20neg-orange?style=flat-square)](#-tests--verification)
 
 ## ✨ Features
 
@@ -18,19 +18,19 @@ English | [中文](README.md)
 
 ```mermaid
 flowchart LR
-    S1[1 场景与瓶颈] --> S2[2 剖析定位热点] --> S3[3 应用优化手段] --> S4[4 复测量化收益] --> S5[5 精度与确定性] --> S6[6 运行时调优与归档]
-    S4 -.负面优化回滚.-> S3
+    S1[1 Scenario and Bottleneck] --> S2[2 Profile and Locate Hotspots] --> S3[3 Apply Optimization Techniques] --> S4[4 Re-test and Quantify Gains] --> S5[5 Precision and Determinism] --> S6[6 Runtime Tuning and Archiving]
+    S4 -. rollback on regression .-> S3
 ```
 
 ## 📦 Installation
 
-No external dependencies, no scripts.
+No external dependencies and no runtime scripts; `scripts/skill_lint.py` is a repo engineering lint script (used by CI and the verification table below), not part of the skill runtime.
 
 ```bash
 # Option 1: workspace sync script (auto-deploy, corpus/ excluded)
 bash scripts/sync-skills.sh ouyezi
 
-# 方式二：手动复制到技能目录（目标目录名 ouyezi）
+# Option 2: manual copy into the skills directory (target dir name: ouyezi)
 cp -r ouyezi/ ~/.zcode/skills/ouyezi/
 # Option 3: Remote install (GitHub repo)
 npx skills add Kirky-X/ouyezi --agent claude-code -y
@@ -42,10 +42,10 @@ npx skills add Kirky-X/ouyezi --agent claude-code -y
 # Verify deployment (expect SKILL.md / references/guide.md / references/methodology.md / evals/)
 ls ~/.zcode/skills/ouyezi/
 
-# 校验 evals 用例数（→ 7 / expect 7）
+# Number of eval cases (→ 7 / expect 7)
 python3 -c "import json; print(len(json.load(open('evals/evals.json'))['evals']))"
 
-# 查看完整原则目录
+# View the full principles catalog
 sed -n '/^## /p' references/methodology.md
 ```
 
@@ -57,14 +57,14 @@ Trigger examples (natural language spoken to the agent):
 
 ## ✅ Tests & Verification
 
-This skill has no scripts and no unit tests; verification is **SKILL.md reference integrity + evals** (measured 2026-10-02):
+The skill runtime has no scripts and no unit tests; repo-level engineering lint is handled by `scripts/skill_lint.py` (self-check rules declared in `lint-checks.json`, 8 in total, also run by CI). Verification is **SKILL.md reference integrity + evals** (measured 2026-10-02):
 
 | Check | Measured result |
 | ----- | --------------- |
 | [references/guide.md](references/guide.md) step count | `grep -c '^## Step'` = **21** (Step 1 – Step 21, contiguous) |
 | [references/methodology.md](references/methodology.md) chapter count | **17** chapters (§1 – §17, matching the §11/§12 referenced in SKILL.md) |
 | Files referenced by SKILL.md | references/guide.md, references/methodology.md, references/commands/, references/templates/ all exist, 0 missing |
-| [evals/evals.json](evals/evals.json) | **7 cases: 5 positive, 2 negative** (id 4 negative — CRUD development without performance requirements should not trigger; id 7 negative — AVX-512 instruction-set-specific optimization should not trigger; id 5/6 are capability checks with file inputs) |
+| [evals/evals.json](evals/evals.json) | **7 cases: 5 positive, 2 negative** (id 4 negative — CRUD development without performance requirements should not trigger; id 7 negative — AVX-512 instruction-set-specific optimization should not trigger; id 5/6/7 are capability checks with file inputs) |
 | Engineering lint | `python3 scripts/skill_lint.py .` passes (0 FAIL) |
 
 ## 📁 Directory Structure
@@ -72,6 +72,8 @@ This skill has no scripts and no unit tests; verification is **SKILL.md referenc
 ```
 ouyezi/
 ├── SKILL.md                   # 6-step Process + Setup + Mode line
+├── skill.json                 # package metadata (name / version / license)
+├── lint-checks.json           # skill_lint self-check rules (8)
 ├── references/
 │   ├── guide.md               # 21-step detailed guide (diagnostic routing / re-test criteria / asset cross-refs)
 │   ├── methodology.md         # 17-chapter principles catalog (§15/§16 index-level)
@@ -86,7 +88,10 @@ ouyezi/
 │       └── archive-checklist.md
 ├── evals/
 │   └── evals.json             # 7 cases (5 positive, 2 negative, with file inputs)
+├── scripts/
+│   └── skill_lint.py          # engineering lint script (used by CI & the verification table, not a runtime dependency)
 └── corpus/                    # source corpus (~15 MB, not distributed, excluded on deploy)
+    ├── convert_corpus.py      # PDF → Markdown corpus conversion script (preprocessing, not a runtime dependency)
     └── images/
 ```
 

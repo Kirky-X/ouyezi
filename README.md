@@ -24,7 +24,7 @@ flowchart LR
 
 ## 📦 安装
 
-无外部依赖、无脚本。
+无外部依赖、无运行时脚本；`scripts/skill_lint.py` 为仓库工程体检脚本（CI 与下方验证表使用），不属于 skill 运行时。
 
 ```bash
 # 方式一：工作区同步脚本（自动部署，corpus/ 语料被排除）
@@ -57,14 +57,14 @@ sed -n '/^## /p' references/methodology.md
 
 ## ✅ 测试与验证
 
-本 skill 无脚本、无单测，验证方式为 **SKILL.md 引用完整性 + evals**（2026-10-02 实测）：
+skill 运行时无脚本、无单测；仓库级工程体检由 `scripts/skill_lint.py` 承担（自检规则声明于 `lint-checks.json`，共 8 条，CI 同步执行）。验证方式为 **SKILL.md 引用完整性 + evals**（2026-10-02 实测）：
 
 | 检查项 | 实测结果 |
 | ------ | -------- |
 | [references/guide.md](references/guide.md) 步骤数 | `grep -c '^## Step'` = **21**（Step 1 – Step 21 连续） |
 | [references/methodology.md](references/methodology.md) 章节数 | **17** 章（§1 – §17，与 SKILL.md 引用的 §11/§12 对应） |
 | SKILL.md 引用的文件 | references/guide.md、references/methodology.md、references/commands/、references/templates/ 均存在，0 缺失 |
-| [evals/evals.json](evals/evals.json) | **7 用例：5 正 2 负**（id 4 负例——无性能诉求的 CRUD 不触发；id 7 负例——绑定指令集的 AVX-512 专属优化不触发；id 5/6 为带 files 输入的能力检验） |
+| [evals/evals.json](evals/evals.json) | **7 用例：5 正 2 负**（id 4 负例——无性能诉求的 CRUD 不触发；id 7 负例——绑定指令集的 AVX-512 专属优化不触发；id 5/6/7 为带 files 输入的能力检验） |
 | 工程体检 | `python3 scripts/skill_lint.py .` 通过（0 FAIL） |
 
 ## 📁 目录结构
@@ -72,6 +72,8 @@ sed -n '/^## /p' references/methodology.md
 ```
 ouyezi/                        # 欧冶子
 ├── SKILL.md                   # 6 步 Process + Setup + Mode line
+├── skill.json                 # 包元数据（name / version / license）
+├── lint-checks.json           # skill_lint 仓内自检规则（8 条）
 ├── references/
 │   ├── guide.md               # 21 步详细指南（含诊断路由/复测判据/资产交叉引用）
 │   ├── methodology.md         # 17 章原则目录（§15/§16 为索引级）
@@ -86,7 +88,10 @@ ouyezi/                        # 欧冶子
 │       └── archive-checklist.md
 ├── evals/
 │   └── evals.json             # 7 用例（5 正 2 负，含 files 输入）
+├── scripts/
+│   └── skill_lint.py          # 工程体检脚本（CI 与验证表使用，非运行时依赖）
 └── corpus/                    # 源语料（约 15 MB，不随包分发，部署时被排除；仅存开发工作区）
+    ├── convert_corpus.py      # PDF → Markdown 语料转换脚本（预处理用，非运行时依赖）
     └── images/                # 文档配图
 ```
 
