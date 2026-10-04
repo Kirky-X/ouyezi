@@ -32,6 +32,7 @@ bash scripts/sync-skills.sh ouyezi
 
 # Option 2: manual copy into the skills directory (target dir name: ouyezi)
 cp -r ouyezi/ ~/.zcode/skills/ouyezi/
+
 # Option 3: Remote install (GitHub repo)
 npx skills add Kirky-X/ouyezi --agent claude-code -y
 ```
