@@ -9,7 +9,7 @@ description: >
   向量化、SIMD、循环优化、并行优化、吞吐优化、延迟优化、精度优化、性能基线、优化复测、
   基准测试、微基准、性能回归门禁。
   Do NOT trigger for: 绑定特定硬件指令集（NEON/SVE/AVX 等）的专属优化、厂商专有
-  工具或 SDK 的配置、不含性能诉求的普通功能开发、安全审查、依赖分析。
+  工具或 SDK 的配置、不含性能诉求的普通功能开发。边界：安全审查→tiangang、依赖分析→dayv、性能问题的审查与诊断→diting，本 skill 只做优化执行。
 license: MIT
 metadata:
   version: "0.1.3"
