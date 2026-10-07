@@ -12,7 +12,7 @@ description: >
   工具或 SDK 的配置、不含性能诉求的普通功能开发。边界：安全审查→tiangang、依赖分析→dayv、性能问题的审查与诊断→diting，本 skill 只做优化执行。
 license: MIT
 metadata:
-  version: "0.1.3"
+  version: "0.1.4"
 ---
 
 # 通用代码性能优化方法论
